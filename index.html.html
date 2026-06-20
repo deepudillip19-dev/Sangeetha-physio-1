@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangeetha Physio Genics - Booking & LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .active-view { display: block !important; }
+        .hidden-view { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- ================= PATIENT WEBSITE VIEW ================= -->
+    <div id="patientView" class="active-view">
+        <nav class="bg-teal-600 text-white p-4 flex justify-between items-center sticky top-0 z-50">
+            <h1 class="text-xl font-bold italic">Sangeetha Physio Genics</h1>
+            <button onclick="showAdminLogin()" class="text-sm bg-teal-700 px-3 py-1 rounded">Staff Login</button>
+        </nav>
+
+        <section class="bg-white p-8 text-center border-b">
+            <h2 class="text-3xl font-bold text-gray-800">Expert Physiotherapy Care</h2>
+            <p class="text-teal-600 font-medium">Dr. Sangeetha R | 79040 23256</p>
+            <div class="mt-4 flex justify-center gap-4 text-sm">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Sports Injury</span>
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Post-Surgery Rehab</span>
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Geriatric Care</span>
+            </div>
+        </section>
+
+        <section class="p-6 max-w-4xl mx-auto">
+            <h3 class="text-xl font-bold mb-4"><i class="fa fa-calendar-check text-teal-600"></i> Live Availability</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="openBooking('10:00 AM')" class="bg-green-100 border-2 border-green-500 p-4 rounded text-center hover:bg-green-500 hover:text-white">10:00 AM<br><small>Available</small></button>
+                <button class="bg-red-50 border-2 border-red-200 p-4 rounded text-center opacity-50 cursor-not-allowed">11:00 AM<br><small>Booked</small></button>
+                <button onclick="openBooking('12:00 PM')" class="bg-green-100 border-2 border-green-500 p-4 rounded text-center hover:bg-green-500 hover:text-white">12:00 PM<br><small>Available</small></button>
+                <button onclick="openBooking('04:00 PM')" class="bg-green-100 border-2 border-green-500 p-4 rounded text-center hover:bg-green-500 hover:text-white">04:00 PM<br><small>Available</small></button>
+            </div>
+        </section>
+    </div>
+
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="modal flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg max-w-sm w-full shadow-2xl">
+            <h2 class="text-xl font-bold mb-2">Book Slot: <span id="selectedSlot"></span></h2>
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mb-4 text-xs">
+                Note: The booking amount of <b>Rs. 100</b> will be reduced from your final bill.
+            </div>
+            <input type="text" placeholder="Patient Name" class="w-full border p-2 mb-2 rounded">
+            <button onclick="confirmBooking()" class="w-full bg-teal-600 text-white py-3 rounded-lg font-bold">Pay Rs. 100 & Confirm</button>
+            <button onclick="closeModal()" class="w-full mt-2 text-gray-500 text-sm underline">Cancel</button>
+        </div>
+    </div>
+
+    <!-- ADMIN LMS VIEW -->
+    <div id="adminView" class="hidden-view min-h-screen bg-gray-100">
+        <div id="sidebar" class="fixed left-0 top-0 h-full bg-teal-900 text-white w-64 transform -translate-x-full transition-transform z-50">
+            <div class="p-6 text-xl font-bold border-b border-teal-800">Clinic LMS</div>
+            <nav class="p-4 space-y-2">
+                <button onclick="showSection('dash')" class="w-full text-left p-2 hover:bg-teal-800 rounded">📊 Dashboard</button>
+                <button onclick="showSection('account')" class="w-full text-left p-2 hover:bg-teal-800 rounded">👤 My Account</button>
+                <button onclick="showSection('testim')" class="w-full text-left p-2 hover:bg-teal-800 rounded">💬 Testimonials</button>
+                <button onclick="showSection('about')" class="w-full text-left p-2 hover:bg-teal-800 rounded">ℹ️ About Us</button>
+                <button onclick="location.reload()" class="w-full text-left p-2 text-red-300 mt-4">Logout</button>
+            </nav>
+        </div>
+
+        <nav class="bg-white shadow p-4 flex justify-between items-center">
+            <button onclick="toggleSidebar()" class="text-2xl text-teal-800"><i class="fa fa-bars"></i></button>
+            <span class="font-bold">Dr. Sangeetha R</span>
+        </nav>
+
+        <div class="p-6">
+            <div id="sect-dash" class="admin-sect">
+                <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded shadow">Today's Visits: <b>4</b></div>
+                    <div class="bg-white p-4 rounded shadow">Total Revenue: <b>Rs. 400</b></div>
+                </div>
+            </div>
+            <!-- Other sections simplified for prototype -->
+            <div id="sect-account" class="admin-sect hidden">
+                <h2 class="text-2xl font-bold mb-4">My Account</h2>
+                <input type="text" value="Dr. Sangeetha R" class="border p-2 mb-2 w-full">
+                <input type="text" value="79040 23256" class="border p-2 mb-2 w-full">
+                <button class="bg-teal-600 text-white px-4 py-2 rounded">Update Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginView" class="hidden-view flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded shadow-lg w-80">
+            <h2 class="text-xl font-bold mb-4">Staff Login</h2>
+            <input type="text" id="user" placeholder="Username" class="w-full border p-2 mb-2">
+            <input type="password" id="pass" placeholder="Password" class="w-full border p-2 mb-4">
+            <button onclick="login()" class="w-full bg-teal-600 text-white py-2 rounded">Login</button>
+        </div>
+    </div>
+
+    <script>
+        function openBooking(s) { document.getElementById('selectedSlot').innerText = s; document.getElementById('bookingModal').style.display='flex'; }
+        function closeModal() { document.getElementById('bookingModal').style.display='none'; }
+        function confirmBooking() { 
+            alert("Payment Rs 100 Success! Opening WhatsApp...");
+            window.open("https://wa.me/917904023256?text=Appointment%20Confirmation%20Request%20for%20" + document.getElementById('selectedSlot').innerText);
+            closeModal();
+        }
+        function showAdminLogin() { document.getElementById('patientView').classList.add('hidden-view'); document.getElementById('loginView').classList.remove('hidden-view'); }
+        function login() { if(document.getElementById('user').value==='Dr_Sangeetha_R' && document.getElementById('pass').value==='Genics@2024') { document.getElementById('loginView').classList.add('hidden-view'); document.getElementById('adminView').classList.remove('hidden-view'); } else { alert('Invalid Login'); } }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
+        function showSection(id) { document.querySelectorAll('.admin-sect').forEach(s => s.classList.add('hidden')); document.getElementById('sect-'+id).classList.remove('hidden'); toggleSidebar(); }
+    </script>
+</body>
+</html>
