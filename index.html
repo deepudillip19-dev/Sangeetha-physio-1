@@ -3,230 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangeetha Physio Genics - Booking & LMS</title>
+    <title>Sangeetha Physio Genics - Rehab & Physio Wellness Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
         .active-view { display: block !important; }
         .hidden-view { display: none !important; }
-        .slot-btn { transition: all 0.2s; border: 2px solid #14b8a6; }
-        .slot-btn:hover { background-color: #14b8a6; color: white; }
+        .slot-btn { transition: all 0.2s; border: 2px solid #0d9488; cursor: pointer; }
+        .slot-btn:hover { background-color: #0d9488; color: white; transform: scale(1.05); }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-slate-50 font-sans">
 
     <!-- ================= PATIENT WEBSITE VIEW ================= -->
     <div id="patientView" class="active-view">
-        <nav class="bg-teal-600 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
-            <h1 class="text-xl font-bold italic">Sangeetha Physio Genics</h1>
-            <div class="flex items-center gap-2">
-                <select onchange="changeLanguage(this.value)" class="bg-teal-700 text-white text-xs p-2 rounded outline-none border-none">
-                    <option value="en">English</option>
-                    <option value="ta">தமிழ் (Tamil)</option>
-                    <option value="hi">हिन्दी (Hindi)</option>
-                </select>
-                <button onclick="showAdminLogin()" data-i18n="staff_login" class="text-sm bg-teal-800 hover:bg-teal-900 px-4 py-2 rounded-full font-bold transition">Staff Login</button>
-            </div>
-        </nav>
-
-        <section class="bg-white p-8 text-center border-b">
-            <h2 class="text-3xl font-bold text-gray-800" data-i18n="hero_title">Expert Physiotherapy Care</h2>
-            <p class="text-teal-600 font-medium">Dr. Sangeetha R | 79040 23256</p>
-            <div class="mt-4 flex flex-wrap justify-center gap-4 text-xs">
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold" data-i18n="spec_1">Sports Injury</span>
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold" data-i18n="spec_2">Post-Surgery Rehab</span>
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold" data-i18n="spec_3">Geriatric Care</span>
-            </div>
-        </section>
-
-        <section class="p-6 max-w-5xl mx-auto text-center">
-            <h3 class="text-xl font-bold mb-6 text-gray-700"><i class="fa fa-clock text-teal-600"></i> <span data-i18n="schedule_title">Schedule Appointment</span></h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                <button onclick="openBooking('10:00 AM')" class="slot-btn bg-white p-3 rounded font-bold">10:00 AM</button>
-                <button onclick="openBooking('10:30 AM')" class="slot-btn bg-white p-3 rounded font-bold">10:30 AM</button>
-                <button onclick="openBooking('11:00 AM')" class="slot-btn bg-white p-3 rounded font-bold">11:00 AM</button>
-                <button onclick="openBooking('11:30 AM')" class="slot-btn bg-white p-3 rounded font-bold">11:30 AM</button>
-                <button onclick="openBooking('12:00 PM')" class="slot-btn bg-white p-3 rounded font-bold">12:00 PM</button>
-            </div>
-        </section>
-
-        <section class="bg-teal-50 p-8">
-            <div class="max-w-4xl mx-auto">
-                <h3 class="text-xl font-bold mb-6 text-gray-700"><i class="fa fa-star text-orange-400"></i> <span data-i18n="testimonials">Patient Testimonials</span></h3>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="bg-white p-4 rounded shadow-sm border-t-4 border-teal-500">
-                        <p class="italic text-gray-600" data-i18n="rev_1">"Excellent results for my shoulder pain. Highly recommended."</p>
-                        <p class="mt-2 font-bold text-sm text-teal-700">- Anita R.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- BOOKING MODAL -->
-    <div id="bookingModal" class="modal flex items-center justify-center">
-        <div class="bg-white p-6 rounded-lg max-w-sm w-full shadow-2xl mx-4">
-            <h2 class="text-xl font-bold mb-2"><span data-i18n="book_slot">Book Slot</span>: <span id="selectedSlot" class="text-teal-600"></span></h2>
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mb-4 text-xs">
-                <b data-i18n="note_tag">Note:</b> <span data-i18n="fee_msg">Rs. 100 booking fee will be reduced from final bill.</span>
-            </div>
-            <input type="text" id="patientName" placeholder="Name" class="w-full border p-3 mb-4 rounded focus:outline-teal-500">
-            <button onclick="confirmBooking()" data-i18n="pay_btn" class="w-full bg-teal-600 text-white py-3 rounded font-bold shadow-lg">Pay Rs. 100 & Confirm</button>
-            <button onclick="closeModal()" data-i18n="cancel" class="w-full mt-3 text-gray-400 text-sm">Cancel</button>
-        </div>
-    </div>
-
-    <!-- ================= ADMIN LMS VIEW ================= -->
-    <div id="adminView" class="hidden-view min-h-screen bg-gray-100">
-        <div id="sidebar" class="fixed left-0 top-0 h-full bg-teal-900 text-white w-64 transform -translate-x-full transition-transform z-50">
-            <div class="p-6 text-xl font-bold border-b border-teal-800 italic">Sangeetha LMS</div>
-            <nav class="p-4 space-y-2">
-                <button onclick="showSection('dash')" class="w-full text-left p-3 hover:bg-teal-800 rounded flex gap-3"><i class="fa fa-chart-line"></i> <span data-i18n="menu_dash">Dashboard</span></button>
-                <button onclick="showSection('account')" class="w-full text-left p-3 hover:bg-teal-800 rounded flex gap-3"><i class="fa fa-user-circle"></i> <span data-i18n="menu_acc">My Account</span></button>
-                <button onclick="showSection('testim')" class="w-full text-left p-3 hover:bg-teal-800 rounded flex gap-3"><i class="fa fa-comments"></i> <span data-i18n="menu_rev">Reviews</span></button>
-                <button onclick="logout()" class="w-full text-left p-3 text-red-300 font-bold mt-4 border-t border-teal-800 pt-4 flex gap-3"><i class="fa fa-sign-out-alt"></i> <span data-i18n="logout">Logout</span></button>
-            </nav>
-        </div>
-
-        <nav class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-40">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="text-2xl text-teal-800"><i class="fa fa-bars"></i></button>
-                <span class="font-bold text-gray-700" id="welcomeUser">Welcome</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <select onchange="changeLanguage(this.value)" class="bg-gray-100 text-gray-700 text-xs p-2 rounded outline-none border">
+        <nav class="bg-teal-700 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
+            <h1 class="text-xl font-bold italic tracking-wider">SANGEETHA PHYSIO GENICS</h1>
+            <div class="flex items-center gap-3">
+                <select onchange="changeLanguage(this.value)" class="bg-teal-800 text-white text-xs p-2 rounded border-none outline-none">
                     <option value="en">English</option>
                     <option value="ta">தமிழ்</option>
                     <option value="hi">हिन्दी</option>
                 </select>
-                <button onclick="logout()" data-i18n="logout" class="text-red-500 font-bold text-sm">Logout</button>
+                <button onclick="showAdminLogin()" data-i18n="staff_login" class="text-xs bg-white text-teal-700 px-4 py-2 rounded-full font-bold">Staff Login</button>
             </div>
         </nav>
 
-        <div class="p-6 max-w-4xl mx-auto">
-            <div id="sect-dash" class="admin-sect">
-                <h2 class="text-2xl font-bold mb-4" data-i18n="menu_dash">Dashboard</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-6 rounded shadow border-l-4 border-teal-500">
-                        <p class="text-gray-400 text-xs font-bold uppercase" data-i18n="dash_visits">Today's Bookings</p>
-                        <p class="text-3xl font-bold text-teal-800">06</p>
+        <!-- Hero Section -->
+        <section class="bg-white py-12 px-6 text-center shadow-inner">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2" data-i18n="hero_title">Rehab and Physio wellness center</h2>
+            <p class="text-teal-600 font-bold text-lg mb-6">Dr. Sangeetha R | 79040 23256</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="bg-teal-100 text-teal-800 px-4 py-1 rounded-full text-sm font-semibold" data-i18n="spec_1">Sports Injury</span>
+                <span class="bg-teal-100 text-teal-800 px-4 py-1 rounded-full text-sm font-semibold" data-i18n="spec_2">Post-Surgery Rehab</span>
+                <span class="bg-teal-100 text-teal-800 px-4 py-1 rounded-full text-sm font-semibold" data-i18n="spec_3">Geriatric Care</span>
+            </div>
+        </section>
+
+        <!-- Appointment Scheduling Section -->
+        <section class="py-10 px-6 max-w-6xl mx-auto text-center">
+            <h3 class="text-2xl font-bold text-slate-700 mb-2" data-i18n="schedule_title">Schedule Appointment</h3>
+            <p class="text-teal-600 font-bold mb-8 text-lg uppercase tracking-widest" data-i18n="book_slot_label">Book Slot</p>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+                <script>
+                    const times = ["10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM"];
+                    times.forEach(t => {
+                        document.write(`<button onclick="openBookingStep1('${t}')" class="slot-btn bg-white p-4 rounded-xl shadow-sm text-teal-700 font-bold text-sm">${t}</button>`);
+                    });
+                </script>
+            </div>
+        </section>
+
+        <!-- Google Reviews -->
+        <section class="bg-slate-100 py-12 px-6">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-bold text-slate-800"><i class="fab fa-google text-blue-500 mr-2"></i> Google Reviews</h3>
+                    <a href="https://www.google.com/search?q=sangeetha+physio+genics#lrd=0x3a52670b5608a01f:0x3efe667f8e1a9ca1,1" target="_blank" class="text-teal-600 font-bold underline">View All</a>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="text-orange-400 mb-2 font-xs"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                        <p class="text-gray-600 italic mb-4">"Best physiotherapy clinic. Highly recommended for wellness."</p>
+                        <p class="font-bold text-slate-800 text-sm">- Arul Kumar</p>
                     </div>
-                    <div class="bg-white p-6 rounded shadow border-l-4 border-green-500">
-                        <p class="text-gray-400 text-xs font-bold uppercase" data-i18n="dash_rev">Payments</p>
-                        <p class="text-3xl font-bold text-green-800">Rs. 600</p>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="text-orange-400 mb-2 font-xs"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                        <p class="text-gray-600 italic mb-4">"Dr. Sangeetha is an expert in Rehab care."</p>
+                        <p class="font-bold text-slate-800 text-sm">- Meera S.</p>
                     </div>
                 </div>
             </div>
+        </section>
+    </div>
 
-            <div id="sect-account" class="admin-sect hidden">
-                <h2 class="text-2xl font-bold mb-4" data-i18n="menu_acc">Account Settings</h2>
-                <div class="bg-white p-6 rounded shadow max-w-md space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1" data-i18n="acc_name_lbl">Full Name</label>
-                        <input type="text" id="acc-name" class="w-full border p-3 rounded">
+    <!-- ================= BOOKING MODAL (STEP-BY-STEP) ================= -->
+    <div id="bookingModal" class="modal flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+            <!-- Step 1: Info -->
+            <div id="step1" class="p-8">
+                <h2 class="text-2xl font-bold text-teal-800 mb-2" data-i18n="p_details">Patient Details</h2>
+                <p class="text-sm text-gray-500 mb-6">Slot: <span id="displaySlot" class="font-bold text-teal-600"></span></p>
+                <div class="space-y-4">
+                    <input type="text" id="pName" placeholder="Full Name" class="w-full border-2 p-3 rounded-lg focus:border-teal-500 outline-none">
+                    <input type="number" id="pPhone" placeholder="Mobile Number" class="w-full border-2 p-3 rounded-lg focus:border-teal-500 outline-none">
+                    <button onclick="goToStep2()" class="w-full bg-teal-600 text-white py-4 rounded-xl font-bold text-lg">Next: Payment</button>
+                    <button onclick="closeModal()" class="w-full text-gray-400 text-sm">Cancel</button>
+                </div>
+            </div>
+            <!-- Step 2: Payment -->
+            <div id="step2" class="p-8 hidden-view text-center">
+                <div class="bg-teal-50 p-4 rounded-xl mb-6 text-center">
+                    <p class="text-teal-800 font-bold text-xl">Booking Fee: Rs. 100</p>
+                    <p class="text-xs text-teal-600 mt-1" data-i18n="fee_msg">Amount reduced from final bill.</p>
+                </div>
+                <p class="text-xs font-bold text-slate-400 mb-4 uppercase">Pay via UPI Apps</p>
+                <div class="grid grid-cols-1 gap-3 mb-6">
+                    <button onclick="payUPI()" class="bg-blue-600 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3"><i class="fa fa-mobile-alt"></i> OPEN UPI APPS (GPAY/PHONEPE)</button>
+                </div>
+                <button onclick="confirmFinalBooking()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold">Confirm After Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= ADMIN LMS VIEW ================= -->
+    <div id="adminView" class="hidden-view min-h-screen bg-slate-100 flex">
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-slate-900 text-white flex-shrink-0 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative h-full z-50">
+            <div class="p-6 text-xl font-bold italic border-b border-slate-800 text-teal-400 uppercase">Admin Portal</div>
+            <nav class="p-4 space-y-2">
+                <button onclick="showSection('dash')" class="w-full text-left p-3 hover:bg-slate-800 rounded flex gap-3"><i class="fa fa-home w-5"></i> <span data-i18n="menu_dash">Dashboard</span></button>
+                <button onclick="showSection('testim')" class="w-full text-left p-3 hover:bg-slate-800 rounded flex gap-3"><i class="fa fa-check-circle w-5"></i> <span>Reviews Approval</span></button>
+                <button onclick="showSection('gallery')" class="w-full text-left p-3 hover:bg-slate-800 rounded flex gap-3"><i class="fa fa-upload w-5"></i> <span>Upload Media</span></button>
+                <button onclick="showSection('account')" class="w-full text-left p-3 hover:bg-slate-800 rounded flex gap-3"><i class="fa fa-user-cog w-5"></i> <span data-i18n="menu_acc">My Account</span></button>
+                <button onclick="logout()" class="w-full text-left p-3 text-red-400 mt-10 border-t border-slate-800 pt-6 flex gap-3"><i class="fa fa-power-off"></i> <span data-i18n="logout">Logout</span></button>
+            </nav>
+        </div>
+
+        <div class="flex-grow flex flex-col">
+            <nav class="bg-white p-4 shadow-sm flex justify-between items-center">
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-800 text-xl"><i class="fa fa-bars"></i></button>
+                <span class="font-bold text-slate-700" id="welcomeUser"></span>
+                <select onchange="changeLanguage(this.value)" class="bg-slate-50 border p-1 rounded text-xs">
+                    <option value="en">EN</option>
+                    <option value="ta">TA</option>
+                    <option value="hi">HI</option>
+                </select>
+            </nav>
+
+            <div class="p-8">
+                <!-- Dashboard -->
+                <div id="sect-dash" class="admin-sect">
+                    <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-teal-500">
+                            <p class="text-gray-400 text-xs font-bold uppercase mb-1">Today's Visits</p>
+                            <p class="text-3xl font-bold">08</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+                            <p class="text-gray-400 text-xs font-bold uppercase mb-1">Fee Collected</p>
+                            <p class="text-3xl font-bold">Rs. 800</p>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1" data-i18n="acc_phone">Phone</label>
-                        <input type="text" value="79040 23256" class="w-full border p-3 rounded">
+                </div>
+
+                <!-- Account / Password Change -->
+                <div id="sect-account" class="admin-sect hidden-view">
+                    <h2 class="text-2xl font-bold mb-6">My Account & Password</h2>
+                    <div class="bg-white p-8 rounded-xl shadow-sm max-w-lg">
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Display Name</label>
+                            <input type="text" id="acc-name" class="w-full bg-slate-50 border p-3 rounded-lg">
+                        </div>
+                        <hr class="my-6">
+                        <h3 class="font-bold text-slate-700 mb-4">Change Security Password</h3>
+                        <div class="space-y-4">
+                            <input type="password" placeholder="New Password" class="w-full border p-3 rounded-lg bg-slate-50">
+                            <input type="password" placeholder="Confirm Password" class="w-full border p-3 rounded-lg bg-slate-50">
+                            <button onclick="alert('Password Updated')" class="w-full bg-teal-600 text-white py-3 rounded-lg font-bold">Save Settings</button>
+                        </div>
                     </div>
-                    <button class="bg-teal-600 text-white w-full py-3 rounded font-bold" data-i18n="acc_save">Save Changes</button>
+                </div>
+
+                <!-- Media Section -->
+                <div id="sect-gallery" class="admin-sect hidden-view">
+                    <h2 class="text-2xl font-bold mb-6">Media Upload</h2>
+                    <div class="bg-white p-10 rounded-xl shadow-sm border-2 border-dashed border-slate-300 text-center">
+                        <i class="fa fa-images text-4xl text-slate-300 mb-4"></i>
+                        <p class="text-slate-500 mb-4 text-sm">Upload transformation videos or clinic photos here</p>
+                        <button class="bg-slate-800 text-white px-6 py-2 rounded-full font-bold">Select Files</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginView" class="hidden-view flex items-center justify-center min-h-screen bg-teal-600">
-        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-sm mx-4">
-            <h2 class="text-2xl font-bold mb-6 text-center text-teal-900" data-i18n="staff_login">Staff Portal</h2>
+    <!-- Login -->
+    <div id="loginView" class="hidden-view flex items-center justify-center min-h-screen bg-slate-900 p-6">
+        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm">
+            <h2 class="text-2xl font-black text-center text-slate-800 mb-8 tracking-widest">STAFF LOGIN</h2>
             <div class="space-y-4">
-                <input type="text" id="user" placeholder="Username" class="w-full border p-4 rounded-xl focus:border-teal-500 focus:outline-none">
-                <input type="password" id="pass" placeholder="Password" class="w-full border p-4 rounded-xl focus:border-teal-500 focus:outline-none">
-                <button onclick="login()" class="w-full bg-teal-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-teal-700 transition shadow-xl" data-i18n="login_btn">Login</button>
-                <button onclick="logout()" class="w-full text-gray-400 text-sm text-center block mt-4 underline" data-i18n="return_web">Return to Website</button>
+                <input type="text" id="user" placeholder="Username" class="w-full border-2 p-4 rounded-xl outline-none">
+                <input type="password" id="pass" placeholder="Password" class="w-full border-2 p-4 rounded-xl outline-none">
+                <button onclick="login()" class="w-full bg-teal-600 text-white py-4 rounded-xl font-bold">Login</button>
+                <button onclick="logout()" class="w-full text-gray-400 text-sm underline mt-4">Cancel</button>
             </div>
         </div>
     </div>
 
     <script>
-        // TRANSLATION DATA
         const translations = {
-            en: {
-                staff_login: "Staff Login", hero_title: "Expert Physiotherapy Care", spec_1: "Sports Injury", spec_2: "Post-Surgery Rehab",
-                spec_3: "Geriatric Care", schedule_title: "Schedule Appointment", testimonials: "Patient Testimonials",
-                book_slot: "Book Slot", note_tag: "Note", fee_msg: "Rs. 100 booking fee will be reduced from final bill.",
-                pay_btn: "Pay Rs. 100 & Confirm", cancel: "Cancel", menu_dash: "Dashboard", menu_acc: "My Account",
-                menu_rev: "Reviews", logout: "Logout", dash_visits: "Today's Bookings", dash_rev: "Payments",
-                acc_name_lbl: "Full Name", acc_phone: "Phone Number", acc_save: "Save Changes", login_btn: "Login",
-                return_web: "Return to Website", rev_1: "Excellent results for my shoulder pain. Highly recommended."
-            },
-            ta: {
-                staff_login: "ஊழியர் உள்நுழைவு", hero_title: "சிறந்த பிசியோதெரபி சிகிச்சை", spec_1: "விளையாட்டு காயம்", spec_2: "அறுவை சிகிச்சைக்கு பின் சிகிச்சை",
-                spec_3: "முதியோர் பராமரிப்பு", schedule_title: "சந்திப்பைத் திட்டமிடுங்கள்", testimonials: "நோயாளி சான்றுகள்",
-                book_slot: "நேரத்தை ஒதுக்குங்கள்", note_tag: "குறிப்பு", fee_msg: "முன்பதிவு கட்டணம் ரூ. 100 இறுதிக் கட்டணத்திலிருந்து குறைக்கப்படும்.",
-                pay_btn: "ரூ. 100 செலுத்தி உறுதி செய்க", cancel: "ரத்து செய்", menu_dash: "டாஷ்போர்டு", menu_acc: "எனது கணக்கு",
-                menu_rev: "மதிப்புரைகள்", logout: "வெளியேறு", dash_visits: "இன்றைய முன்பதிவுகள்", dash_rev: "வருமானம்",
-                acc_name_lbl: "முழு பெயர்", acc_phone: "தொலைபேசி எண்", acc_save: "மாற்றங்களைச் சேமி", login_btn: "உள்நுழைய",
-                return_web: "இணையதளத்திற்கு திரும்பவும்", rev_1: "தோள் வலிக்கு சிறந்த சிகிச்சை. மிகவும் பரிந்துரைக்கிறேன்."
-            },
-            hi: {
-                staff_login: "कर्मचारी लॉगिन", hero_title: "विशेषज्ञ फिजियोथेरेपी देखभाल", spec_1: "खेल चोट", spec_2: "सर्जरी के बाद पुनर्वास",
-                spec_3: "वृद्धावस्था देखभाल", schedule_title: "अपॉइंटमेंट शेड्यूल करें", testimonials: "रोगी प्रशंसापत्र",
-                book_slot: "स्लॉट बुक करें", note_tag: "नोट", fee_msg: "100 रुपये बुकिंग शुल्क अंतिम बिल से कम किया जाएगा।",
-                pay_btn: "100 रुपये भुगतान और पुष्टि", cancel: "रद्द करें", menu_dash: "डैशबोर्ड", menu_acc: "मेरा खाता",
-                menu_rev: "समीक्षाएं", logout: "लॉगआउट", dash_visits: "आज की बुकिंग", dash_rev: "भुगतान",
-                acc_name_lbl: "पूरा नाम", acc_phone: "फ़ोन नंबर", acc_save: "परिवर्तन सहेजें", login_btn: "लॉगिन",
-                return_web: "वेबसाइट पर वापस जाएं", rev_1: "मेरे कंधे के दर्द के लिए उत्कृष्ट परिणाम। अत्यधिक अनुशंसित।"
-            }
+            en: { staff_login: "Staff Login", hero_title: "Rehab and Physio wellness center", spec_1: "Sports Injury", spec_2: "Post-Surgery Rehab", spec_3: "Geriatric Care", schedule_title: "Schedule Appointment", book_slot_label: "Book Slot", p_details: "Patient Details", fee_msg: "Booking fee reduced from final bill.", menu_dash: "Dashboard", menu_acc: "My Account", logout: "Logout" },
+            ta: { staff_login: "உள்நுழைவு", hero_title: "மறுவாழ்வு மற்றும் பிசியோ வெல்னஸ் மையம்", spec_1: "விளையாட்டு காயம்", spec_2: "அறுவை சிகிச்சை பின் சிகிச்சை", spec_3: "முதியோர் பராமரிப்பு", schedule_title: "சந்திப்பைத் திட்டமிடுங்கள்", book_slot_label: "நேரத்தை ஒதுக்குங்கள்", p_details: "நோயாளி விவரங்கள்", fee_msg: "முன்பதிவு கட்டணம் இறுதி பில்லிலிருந்து குறைக்கப்படும்.", menu_dash: "டாஷ்போர்டு", menu_acc: "கணக்கு", logout: "வெளியேறு" },
+            hi: { staff_login: "लॉगिन", hero_title: "पुनर्वास और फिजियो वेलनेस सेंटर", spec_1: "खेल चोट", spec_2: "सर्जरी के बाद पुनर्वास", spec_3: "वृद्धावस्था देखभाल", schedule_title: "अपॉइंटमेंट लें", book_slot_label: "स्लॉट बुक करें", p_details: "रोगी विवरण", fee_msg: "बुकिंग शुल्क अंतिम बिल से कम किया जाएगा।", menu_dash: "डैशबोर्ड", menu_acc: "मेरा खाता", logout: "लॉगआउट" }
         };
 
-        let currentLang = 'en';
-
         function changeLanguage(lang) {
-            currentLang = lang;
             document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                el.innerText = translations[lang][key];
+                el.innerText = translations[lang][el.getAttribute('data-i18n')];
             });
         }
 
-        function openBooking(s) { 
-            document.getElementById('selectedSlot').innerText = s; 
-            document.getElementById('bookingModal').style.display='flex'; 
+        let selectedTime = "";
+        function openBookingStep1(time) {
+            selectedTime = time;
+            document.getElementById('displaySlot').innerText = time;
+            document.getElementById('bookingModal').style.display = 'flex';
+            document.getElementById('step1').classList.remove('hidden-view');
+            document.getElementById('step2').classList.add('hidden-view');
         }
-        function closeModal() { document.getElementById('bookingModal').style.display='none'; }
-        
-        function confirmBooking() { 
-            const name = document.getElementById('patientName').value || 'Patient';
-            alert("Success! Connecting WhatsApp...");
-            const msg = `Hi Dr. Sangeetha R, Name: ${name}, Slot: ${document.getElementById('selectedSlot').innerText}, Fee Paid: Rs.100`;
+
+        function goToStep2() {
+            if(!document.getElementById('pName').value || !document.getElementById('pPhone').value) {
+                alert("Enter Name & Phone"); return;
+            }
+            document.getElementById('step1').classList.add('hidden-view');
+            document.getElementById('step2').classList.remove('hidden-view');
+        }
+
+        function payUPI() {
+            window.location.href = `upi://pay?pa=7904023256@okbizaxis&pn=SangeethaPhysio&am=100&cu=INR`;
+        }
+
+        function confirmFinalBooking() {
+            const name = document.getElementById('pName').value;
+            alert("Confirmed! Opening WhatsApp...");
+            const msg = `Booking: ${name}, Slot: ${selectedTime}, Fee: Rs. 100 Paid.`;
             window.open("https://wa.me/917904023256?text=" + encodeURIComponent(msg));
             closeModal();
         }
 
-        function showAdminLogin() { 
-            document.getElementById('patientView').classList.add('hidden-view'); 
-            document.getElementById('loginView').classList.remove('hidden-view'); 
+        function closeModal() { document.getElementById('bookingModal').style.display = 'none'; }
+
+        function showAdminLogin() {
+            document.getElementById('patientView').classList.add('hidden-view');
+            document.getElementById('loginView').classList.remove('hidden-view');
         }
 
-        function login() { 
+        function login() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
-
-            if((u === 'Dr_Sangeetha_R' && p === 'Genics@2024') || (u === 'Dillip' && p === 'Dillip')) { 
+            if((u === 'Dr_Sangeetha_R' && p === 'Genics@2024') || (u === 'Dillip' && p === 'Dillip')) {
                 document.getElementById('welcomeUser').innerText = "User: " + u;
                 document.getElementById('acc-name').value = (u === 'Dillip') ? 'Dillip' : 'Dr. Sangeetha R';
-                document.getElementById('loginView').classList.add('hidden-view'); 
-                document.getElementById('adminView').classList.remove('hidden-view'); 
-            } else { alert('Invalid Access'); } 
+                document.getElementById('loginView').classList.add('hidden-view');
+                document.getElementById('adminView').classList.remove('hidden-view');
+            } else { alert('Access Denied'); }
         }
 
         function logout() { location.reload(); }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
-        function showSection(id) { 
-            document.querySelectorAll('.admin-sect').forEach(s => s.classList.add('hidden')); 
-            document.getElementById('sect-'+id).classList.remove('hidden'); 
+        function showSection(id) {
+            document.querySelectorAll('.admin-sect').forEach(s => s.classList.add('hidden-view'));
+            document.getElementById('sect-'+id).classList.remove('hidden-view');
             if(window.innerWidth < 768) toggleSidebar();
         }
     </script>
