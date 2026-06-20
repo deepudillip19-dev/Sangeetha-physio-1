@@ -44,12 +44,12 @@
 
     <!-- BOOKING MODAL -->
     <div id="bookingModal" class="modal flex items-center justify-center">
-        <div class="bg-white p-6 rounded-lg max-w-sm w-full shadow-2xl">
+        <div class="bg-white p-6 rounded-lg max-w-sm w-full shadow-2xl mx-4">
             <h2 class="text-xl font-bold mb-2">Book Slot: <span id="selectedSlot"></span></h2>
             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mb-4 text-xs">
                 Note: The booking amount of <b>Rs. 100</b> will be reduced from your final bill.
             </div>
-            <input type="text" placeholder="Patient Name" class="w-full border p-2 mb-2 rounded">
+            <input type="text" id="patientName" placeholder="Patient Name" class="w-full border p-2 mb-2 rounded">
             <button onclick="confirmBooking()" class="w-full bg-teal-600 text-white py-3 rounded-lg font-bold">Pay Rs. 100 & Confirm</button>
             <button onclick="closeModal()" class="w-full mt-2 text-gray-500 text-sm underline">Cancel</button>
         </div>
@@ -64,55 +64,128 @@
                 <button onclick="showSection('account')" class="w-full text-left p-2 hover:bg-teal-800 rounded">👤 My Account</button>
                 <button onclick="showSection('testim')" class="w-full text-left p-2 hover:bg-teal-800 rounded">💬 Testimonials</button>
                 <button onclick="showSection('about')" class="w-full text-left p-2 hover:bg-teal-800 rounded">ℹ️ About Us</button>
-                <button onclick="location.reload()" class="w-full text-left p-2 text-red-300 mt-4">Logout</button>
+                <button onclick="location.reload()" class="w-full text-left p-2 text-red-300 mt-4 font-bold border-t border-teal-800 pt-4">Logout</button>
             </nav>
         </div>
 
-        <nav class="bg-white shadow p-4 flex justify-between items-center">
+        <nav class="bg-white shadow p-4 flex justify-between items-center sticky top-0">
             <button onclick="toggleSidebar()" class="text-2xl text-teal-800"><i class="fa fa-bars"></i></button>
-            <span class="font-bold">Dr. Sangeetha R</span>
+            <span class="font-bold text-teal-800" id="welcomeUser">Welcome</span>
         </nav>
 
-        <div class="p-6">
+        <div class="p-6 max-w-4xl mx-auto">
+            <!-- DASHBOARD -->
             <div id="sect-dash" class="admin-sect">
-                <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-4 rounded shadow">Today's Visits: <b>4</b></div>
-                    <div class="bg-white p-4 rounded shadow">Total Revenue: <b>Rs. 400</b></div>
+                <h2 class="text-2xl font-bold mb-4 text-gray-700">Dashboard Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-teal-500">
+                        <p class="text-gray-500 text-sm font-bold uppercase">Today's Appointments</p>
+                        <p class="text-3xl font-bold">04</p>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-green-500">
+                        <p class="text-gray-500 text-sm font-bold uppercase">Revenue (Booking Fees)</p>
+                        <p class="text-3xl font-bold">Rs. 400</p>
+                    </div>
                 </div>
             </div>
-            <!-- Other sections simplified for prototype -->
+
+            <!-- MY ACCOUNT -->
             <div id="sect-account" class="admin-sect hidden">
-                <h2 class="text-2xl font-bold mb-4">My Account</h2>
-                <input type="text" value="Dr. Sangeetha R" class="border p-2 mb-2 w-full">
-                <input type="text" value="79040 23256" class="border p-2 mb-2 w-full">
-                <button class="bg-teal-600 text-white px-4 py-2 rounded">Update Profile</button>
+                <h2 class="text-2xl font-bold mb-4 text-gray-700">My Account Settings</h2>
+                <div class="bg-white p-6 rounded shadow space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Clinic Name / Name</label>
+                        <input type="text" value="Dr. Sangeetha R" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Phone Number</label>
+                        <input type="text" value="79040 23256" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">New Password</label>
+                        <input type="password" placeholder="Enter new password" class="w-full border p-2 rounded">
+                    </div>
+                    <button class="bg-teal-600 text-white px-6 py-2 rounded font-bold hover:bg-teal-700">Save Changes</button>
+                </div>
+            </div>
+
+            <!-- TESTIMONIALS -->
+            <div id="sect-testim" class="admin-sect hidden">
+                <h2 class="text-2xl font-bold mb-4 text-gray-700">Moderate Testimonials</h2>
+                <div class="bg-white p-4 rounded shadow flex justify-between items-center mb-4 border-l-4 border-orange-400">
+                    <div>
+                        <p class="font-bold">Anita R. <span class="text-xs font-normal text-gray-400">(Pending)</span></p>
+                        <p class="text-gray-600 italic">"The geriatric care for my father was excellent. He can walk better now."</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="bg-green-500 text-white px-3 py-1 rounded text-xs" onclick="alert('Approved!')">Approve</button>
+                        <button class="bg-red-500 text-white px-3 py-1 rounded text-xs" onclick="alert('Rejected')">Reject</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT US -->
+            <div id="sect-about" class="admin-sect hidden">
+                <h2 class="text-2xl font-bold mb-4 text-gray-700">About Clinic Section</h2>
+                <textarea class="w-full border p-4 rounded h-32 mb-4">Sangeetha Physio Genics is dedicated to professional rehabilitation care specializing in Sports Injury, Post-Surgery recovery, and Geriatric physiotherapy under the guidance of Dr. Sangeetha R.</textarea>
+                <button class="bg-teal-600 text-white px-6 py-2 rounded font-bold">Update Content</button>
             </div>
         </div>
     </div>
 
     <!-- LOGIN -->
-    <div id="loginView" class="hidden-view flex items-center justify-center min-h-screen">
+    <div id="loginView" class="hidden-view flex items-center justify-center min-h-screen bg-teal-50">
         <div class="bg-white p-8 rounded shadow-lg w-80">
-            <h2 class="text-xl font-bold mb-4">Staff Login</h2>
-            <input type="text" id="user" placeholder="Username" class="w-full border p-2 mb-2">
-            <input type="password" id="pass" placeholder="Password" class="w-full border p-2 mb-4">
-            <button onclick="login()" class="w-full bg-teal-600 text-white py-2 rounded">Login</button>
+            <h2 class="text-2xl font-bold mb-6 text-center text-teal-800">Staff Login</h2>
+            <input type="text" id="user" placeholder="Username" class="w-full border p-3 mb-3 rounded border-gray-300">
+            <input type="password" id="pass" placeholder="Password" class="w-full border p-3 mb-6 rounded border-gray-300">
+            <button onclick="login()" class="w-full bg-teal-600 text-white py-3 rounded font-bold hover:bg-teal-700 transition shadow-md">Login to LMS</button>
+            <p class="text-center text-xs text-gray-400 mt-4 italic">Secure access only</p>
         </div>
     </div>
 
     <script>
-        function openBooking(s) { document.getElementById('selectedSlot').innerText = s; document.getElementById('bookingModal').style.display='flex'; }
+        function openBooking(s) { 
+            document.getElementById('selectedSlot').innerText = s; 
+            document.getElementById('bookingModal').style.display='flex'; 
+        }
         function closeModal() { document.getElementById('bookingModal').style.display='none'; }
+        
         function confirmBooking() { 
-            alert("Payment Rs 100 Success! Opening WhatsApp...");
-            window.open("https://wa.me/917904023256?text=Appointment%20Confirmation%20Request%20for%20" + document.getElementById('selectedSlot').innerText);
+            const name = document.getElementById('patientName').value || 'Patient';
+            alert("Payment Rs 100 Success!\nConnecting to Clinic WhatsApp...");
+            window.open("https://wa.me/917904023256?text=New%20Booking%20Confirmed!%0AName:%20"+name+"%0ASlot:%20"+document.getElementById('selectedSlot').innerText+"%0AFee%20Paid:%20Rs.100");
             closeModal();
         }
-        function showAdminLogin() { document.getElementById('patientView').classList.add('hidden-view'); document.getElementById('loginView').classList.remove('hidden-view'); }
-        function login() { if(document.getElementById('user').value==='Dr_Sangeetha_R' && document.getElementById('pass').value==='Genics@2024') { document.getElementById('loginView').classList.add('hidden-view'); document.getElementById('adminView').classList.remove('hidden-view'); } else { alert('Invalid Login'); } }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
-        function showSection(id) { document.querySelectorAll('.admin-sect').forEach(s => s.classList.add('hidden')); document.getElementById('sect-'+id).classList.remove('hidden'); toggleSidebar(); }
+
+        function showAdminLogin() { 
+            document.getElementById('patientView').classList.add('hidden-view'); 
+            document.getElementById('loginView').classList.remove('hidden-view'); 
+        }
+
+        function login() { 
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+
+            // Updated credentials logic
+            if((u === 'Dr_Sangeetha_R' && p === 'Genics@2024') || (u === 'Dillip' && p === 'Dillip')) { 
+                document.getElementById('welcomeUser').innerText = "Logged in as: " + u;
+                document.getElementById('loginView').classList.add('hidden-view'); 
+                document.getElementById('adminView').classList.remove('hidden-view'); 
+            } else { 
+                alert('Invalid Username or Password'); 
+            } 
+        }
+
+        function toggleSidebar() { 
+            document.getElementById('sidebar').classList.toggle('-translate-x-full'); 
+        }
+
+        function showSection(id) { 
+            document.querySelectorAll('.admin-sect').forEach(s => s.classList.add('hidden')); 
+            document.getElementById('sect-'+id).classList.remove('hidden'); 
+            toggleSidebar(); 
+        }
     </script>
 </body>
 </html>
